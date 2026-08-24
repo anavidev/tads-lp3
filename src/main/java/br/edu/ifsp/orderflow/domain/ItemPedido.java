@@ -2,6 +2,8 @@ package br.edu.ifsp.orderflow.domain;
 
 import br.edu.ifsp.orderflow.domain.Produto;
 
+import java.math.BigDecimal;
+
 public class ItemPedido {
     private final Produto produto;
     private final int quantidade;
@@ -19,8 +21,12 @@ public class ItemPedido {
         return quantidade;
     }
 
+    public BigDecimal calcularSubtotal(){
+        return this.produto.getPreco().multiply(BigDecimal.valueOf(this.quantidade));
+    }
+
     @Override
     public String toString() {
-        return "Item do Pedido X: " + this.produto + ", X" + this.quantidade;
+        return "Item do Pedido X: " + this.produto + ", x" + this.quantidade;
     }
 }
