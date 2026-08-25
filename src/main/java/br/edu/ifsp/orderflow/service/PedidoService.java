@@ -21,11 +21,8 @@ public class PedidoService {
         }
 
         // 2- processar pagamento
-
         // 3- salvar se pagamento ocorreu com sucesso
-
         // 4- notificar cliente
-
         // 5- retorna o pedido
         return pedido;
 
