@@ -1,11 +1,9 @@
 package br.edu.ifsp.orderflow.domain;
 
-import br.edu.ifsp.orderflow.domain.ItemPedido;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.UUID;
 import java.util.List;
+import java.util.UUID;
 
 public class Pedido {
 
@@ -15,34 +13,33 @@ public class Pedido {
     private EStatusPedido status;
 
     public Pedido(Cliente cliente) {
-        this.id = (UUID.randomUUID()).toString();
+        this.id = (UUID.randomUUID()).toString() ;
         this.cliente = cliente;
         this.itens = new ArrayList<>();
         this.status = EStatusPedido.CRIADO;
     }
 
-    public void adicionarItem(ItemPedido item){
+    public void adicionarItem(ItemPedido item) {
         this.itens.add(item);
     }
 
-    public BigDecimal calcularTotal(){
+    public BigDecimal calcularTotal() {
 
         BigDecimal total = BigDecimal.ZERO;
 
-        for (int i = 0; i < this.itens.size(); i++){
-            ItemPedido item = this.itens.get(i);
+        for (int indice = 0; indice < this.itens.size(); indice++) {
+            ItemPedido item = this.itens.get(indice);
             total = total.add(item.calcularSubtotal());
         }
 
         return total;
-
     }
 
-    public void marcarComoPago(){
+    public void marcarComoPago() {
         this.status = EStatusPedido.PAGO;
     }
 
-    public void cancelar(){
+    public void cancelar() {
         this.status = EStatusPedido.CANCELADO;
     }
 
@@ -62,10 +59,12 @@ public class Pedido {
         return status;
     }
 
-    @Override
-    public String toString() {
-        return "Pedido[id: " + this.id + ", status: " + this.status + ", total: R$" + this.calcularTotal() + "]";
+    public String getIdCurto() {
+        return this.id.substring(0, 8);
     }
 
+    @Override
+    public String toString() {
+        return "Pedido[ ID: " + this.getIdCurto() + ", Status: " + this.status + ", Total R$: " + this.calcularTotal() + "]";
+    }
 }
-

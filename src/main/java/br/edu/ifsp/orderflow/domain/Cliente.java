@@ -3,6 +3,7 @@ package br.edu.ifsp.orderflow.domain;
 import java.util.UUID;
 
 public class Cliente {
+
     private final String id;
     private final String nome;
     private final String email;
@@ -29,5 +30,4 @@ public class Cliente {
     public String toString() {
         return this.nome + " <" + this.email + ">";
     }
-
 }

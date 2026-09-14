@@ -6,6 +6,7 @@ import br.edu.ifsp.orderflow.domain.Produto;
 import br.edu.ifsp.orderflow.service.IEstoqueService;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class InMemoryEstoqueService implements IEstoqueService {
@@ -13,67 +14,66 @@ public class InMemoryEstoqueService implements IEstoqueService {
     private final Map<String, Integer> estoque = new HashMap<>();
 
     @Override
-    public void adicionarEstoque(Produto p, int qtd) {
-        int qtdAtual = this.estoque.getOrDefault(p.getId(), 0);
-        this.estoque.put(p.getId(), qtd + qtdAtual);
+    public void adicionarEstoque(Produto produto, int quantidade) {
+        int qtdAtual = this.estoque.getOrDefault(produto.getId(), 0);
+        this.estoque.put(produto.getId(), quantidade + qtdAtual);
     }
 
     @Override
-    public int qtdDisponivel(Produto p) {
-        return this.estoque.getOrDefault(p.getId(),0);
+    public int quantidadeDisponivel(Produto produto) {
+        return this.estoque.getOrDefault(produto.getId(), 0);
     }
 
+    private void sleep(long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
 
     @Override
     public boolean reservar(Pedido pedido) {
 
-        // reservar apenas caso todos os itens do pedido estiverem disponivel no estoque
-        for (ItemPedido item : pedido.getItens()){
+        List<ItemPedido> listaDeItens = pedido.getItens();
 
-            int qtdDisponivel = this.qtdDisponivel(item.getProduto());
+        // Conferir se todos os produtos têm estoque
+        for (ItemPedido item : listaDeItens) {
 
-            if(item.getQuantidade() > qtdDisponivel) {
-                return false; // se NAO retornar 'falso' todos os itens possuem estoque
+            int disponivel = this.quantidadeDisponivel(item.getProduto());
+
+            if (item.getQuantidade() > disponivel) {
+                return false;
             }
-
         }
 
-        // remover quantidade garantida em pedido
-        for (ItemPedido item : pedido.getItens()){
+        this.sleep(50);
+
+        for (ItemPedido item : listaDeItens) {
 
             Produto produto = item.getProduto();
             String produtoId = produto.getId(); // item.getProduto().getId()
-            int qtdAtual = this.estoque.getOrDefault(produtoId, 0);
-
-            // reservar qtd do item no estoque
-            this.estoque.put(produtoId, qtdAtual - item.getQuantidade());
-
+            int quantidadeAtual = this.estoque.getOrDefault(produtoId, 0);
+            this.estoque.put(produtoId, quantidadeAtual - item.getQuantidade());
         }
 
         return true;
-
     }
-
 
     @Override
     public void liberar(Pedido pedido) {
 
-        // devolver para o estoque (ex. erro de pagamento)
-        for (ItemPedido item : pedido.getItens()){
-
-//            String produto = item.getProduto().getId();
-//            int qtdAtual = this.estoque.getOrDefault(produto, 0);
+//        List<ItemPedido> itens = pedido.getItens();
 //
-//            this.estoque.put(produto, qtdAtual + item.getQuantidade());
+//        for (ItemPedido item : itens) {
+//
+//            Produto produto = item.getProduto();
+//            int disponivel = this.quantidadeDisponivel(item.getProduto());
+//            this.estoque.put(produto.getId(), disponivel + item.getQuantidade());
+//        }
 
-            String produto = item.getProduto().getId();
-            int qtdAtual = this.estoque.getOrDefault(produto, 0);
-
-            // devolve qtd do item no estoque
+        for (ItemPedido item : pedido.getItens()) {
             this.adicionarEstoque(item.getProduto(), item.getQuantidade());
-
         }
-
     }
-
 }
