@@ -19,10 +19,17 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Optional;
 
+// escolhe as implementacoes
+// para trocar implementacao:
+// 1- criar a classe com implements IPedidoRepository, implementando save, findById e findAll
+// 2- trocar o new no Main: IPedidoRepository pedidoRepository = new ArquivoPedidoRepository();
 public class Main {
 
     public static void main(String[] args) {
 
+        // o tipo declarado delimita o que pode ser chamado. o objeto real decide qual implementacao atende a cada chamada (despacho dinamico)
+        // tipo declarado: IEstoqueService (compilador considera somente ele. o programa compila ou não)
+        // objeto real: InMemoryEstoqueService (a JVM considera o objeto. qual codigo roda no momento da execução)
         IEstoqueService estoqueService = new InMemoryEstoqueService();
         IPedidoRepository pedidoRepository = new InMemoryPedidoRepository();
         INotificacaoService notificacaoService = new ConsoleNotificacaoService();

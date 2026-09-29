@@ -11,6 +11,9 @@ import java.util.Map;
 
 public class InMemoryEstoqueService implements IEstoqueService {
 
+    // esta em InMemoryEstoqueService e nao em IEstoqueService
+    // porque interface nao guarda estado de instancia,
+    // so declara o que um servico de estoque sabe fazer
     private final Map<String, Integer> estoque = new HashMap<>();
 
     @Override
