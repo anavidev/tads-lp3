@@ -21,6 +21,14 @@ public class PagamentoRecusadoMetricasHandler implements IEventHandler<Pagamento
         this.pedidoRepository = pedidoRepository;
     }
 
+    public PagamentoRecusadoMetricasHandler(Metricas metricas, IPedidoRepository pedidoRepository, INotificacaoService notificacaoService) {
+        this.pedidoRepository = pedidoRepository;
+        this.notificacaoService = notificacaoService;
+    }
+
+    public PagamentoRecusadoMetricasHandler(Metricas metricas) {
+    }
+
     @Override
     public void handle(PagamentoRecusado event){
         Optional<Pedido> pedidoEncontrado = this.pedidoRepository.findById(event.pedidoId());
