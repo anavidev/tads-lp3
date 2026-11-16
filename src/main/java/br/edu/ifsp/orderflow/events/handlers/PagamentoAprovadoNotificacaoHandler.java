@@ -26,20 +26,20 @@ public class PagamentoAprovadoNotificacaoHandler implements IEventHandler<Pagame
 
         Optional<Pedido> pedidoEncontrado = this.pedidoRepository.findById(event.pedidoId());
 
-        if(pedidoEncontrado.isPresent()){
+        if (pedidoEncontrado.isPresent()) {
+
             Pedido pedido = pedidoEncontrado.get();
 
             this.notificacaoService.notificar(
-                    pedido.getCliente(),
-                    "Pagamento aprovado! Pedido: " + pedido.getIdCurto() + "confirmado (transação " + event.transacaoId() + ")"
+                pedido.getCliente(),
+                "Pagamento aprovado! Pedido " + pedido.getIdCurto()
+                    + " confirmado (transação " + event.transacaoId() + ")"
             );
         }
     }
 
     @Override
     public Class<PagamentoAprovado> eventType() {
-
         return PagamentoAprovado.class;
     }
-
 }

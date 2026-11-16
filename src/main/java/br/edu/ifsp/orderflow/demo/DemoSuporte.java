@@ -79,7 +79,7 @@ public class DemoSuporte {
                 estoqueService,
                 pedidoRepository,
                 pagamentoGateway,
-                (INotificacaoService) eventBus
+                eventBus
         );
 
         estoqueService.adicionarEstoque(MOUSE, 1000);

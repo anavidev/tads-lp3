@@ -14,8 +14,8 @@ public class PedidoCanceladoNotificacaoHandler implements IEventHandler<PedidoCa
     private final INotificacaoService notificacaoService;
 
     public PedidoCanceladoNotificacaoHandler(
-            IPedidoRepository pedidoRepository,
-            INotificacaoService notificacaoService
+        IPedidoRepository pedidoRepository,
+        INotificacaoService notificacaoService
     ) {
         this.notificacaoService = notificacaoService;
         this.pedidoRepository = pedidoRepository;
@@ -23,14 +23,16 @@ public class PedidoCanceladoNotificacaoHandler implements IEventHandler<PedidoCa
 
     @Override
     public void handle(PedidoCancelado event) {
+
         Optional<Pedido> pedidoEncontrado = this.pedidoRepository.findById(event.pedidoId());
 
-        if(pedidoEncontrado.isPresent()){
+        if (pedidoEncontrado.isPresent()) {
+
             Pedido pedido = pedidoEncontrado.get();
 
             this.notificacaoService.notificar(
-                    pedido.getCliente(),
-                    "Pedido: " + pedido.getIdCurto() + "cancelado: " + event.motivo()
+                pedido.getCliente(),
+                "Pedido " + pedido.getIdCurto() + " cancelado: " + event.motivo()
             );
         }
     }

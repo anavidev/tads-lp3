@@ -14,7 +14,7 @@ public class ProcessarPedidoTask implements Runnable {
     }
 
     @Override
-    public void run(){
+    public void run() {
         this.service.processar(pedido);
     }
 }
