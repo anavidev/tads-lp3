@@ -43,7 +43,6 @@ public class CondicaoDeCorridaEstoque {
         System.out.println(nome + ": ");
         System.out.println("cliente A reservou? " + clienteA.sucesso);
         System.out.println("cliente B reservou? " + clienteB.sucesso);
-        System.out.println();
 
         if(estoqueFinal < 0){
             System.out.println(">>> vendemos " + (10 - estoqueFinal) + " unidades tendo 10");
